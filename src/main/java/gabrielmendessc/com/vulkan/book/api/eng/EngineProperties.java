@@ -15,6 +15,8 @@ public class EngineProperties {
     private static EngineProperties instance;
     @Getter
     private int ups;
+    @Getter
+    private boolean validate;
 
     private EngineProperties() {
 
@@ -25,6 +27,7 @@ public class EngineProperties {
             properties.load(inputStream);
 
             ups = Integer.parseInt(properties.getOrDefault("ups", DEFAULT_UPS).toString());
+            validate = Boolean.parseBoolean(properties.getOrDefault("vkValidate", false).toString());
 
         } catch (IOException e) {
 
