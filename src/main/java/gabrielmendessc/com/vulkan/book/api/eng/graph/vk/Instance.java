@@ -46,11 +46,8 @@ import static org.lwjgl.vulkan.VK10.vkEnumerateInstanceLayerProperties;
 
 public class Instance {
 
-    public static final int MESSAGE_SEVERITY_BITMASK = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT |
-            VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT;
-    public static final int MESSAGE_TYPE_BITMASK = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
-            VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
-            VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+    public static final int MESSAGE_SEVERITY_BITMASK = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT;
+    public static final int MESSAGE_TYPE_BITMASK = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
     private static final String PORTABILITY_EXTENSION = "VK_KHR_portability_enumeration";
     @Getter
     private final VkInstance vkInstance;
@@ -199,16 +196,27 @@ public class Instance {
 
     }
 
+    /*Validation Layers are optional components that adds extra operations to Vulkan's functions calls.
+    * It's usually used for debugging operations, as:
+    *   Tracking parameters and creations and destruction of objects;
+    *   Thread-safety;
+    *   Logs.
+    * It's not needed for the application to run. It can be added in debug builds and removed from
+    * release builds.*/
     private List<String> getSupportedValidationLayers() {
 
         try (MemoryStack memoryStack = MemoryStack.stackPush()) {
 
+            /*Firstly, we call the vkEnumerateInstanceLayerProperties to store in the intBuffer
+            * the number of layers in the device.*/
             IntBuffer numLayerArray = memoryStack.callocInt(1);
             vkEnumerateInstanceLayerProperties(numLayerArray, null);
 
             int numLayers = numLayerArray.get(0);
             Logger.debug("Instance supports [{}] layers", numLayers);
 
+            /*After getting the number of layers, we pass a property buffer to the function.
+            * This buffer will store the properties, e.g. layer names.*/
             VkLayerProperties.Buffer propertiesBuffer = VkLayerProperties.calloc(numLayers, memoryStack);
             vkEnumerateInstanceLayerProperties(numLayerArray, propertiesBuffer);
 
@@ -241,7 +249,8 @@ public class Instance {
 
             }
 
-            //Fallback 2 (set)
+            /*The validations added above were the main layer package. If they weren't
+            * present, then we add the individual layers*/
             List<String> requestedLayerList = new ArrayList<>();
             requestedLayerList.add("VK_LAYER_GOOGLE_threading");
             requestedLayerList.add("VK_LAYER_LUNARG_parameter_validation");
@@ -254,16 +263,25 @@ public class Instance {
 
     }
 
+    /*Extensions are additional features that extend the Vulkan API. The add new contest as:
+    *   New structs;
+    *   New functions;
+    *   Alter the functionality of some API functions.*/
     private Set<String> getInstanceExtensions() {
 
         Set<String> instanceExtensionSet = new HashSet<>();
         try (MemoryStack memoryStack = MemoryStack.stackPush()) {
 
+
+            /*Firstly, we call the vkEnumerateInstanceExtensionProperties to store in the intBuffer
+             * the number of extensions in the device.*/
             IntBuffer numExtensionBuf = memoryStack.callocInt(1);
             vkEnumerateInstanceExtensionProperties((String) null, numExtensionBuf, null);
             int numExtensions = numExtensionBuf.get(0);
             Logger.debug("Instance supports [{}] extensions", numExtensions);
 
+            /*After getting the number of extensions, we pass a property buffer to the function.
+             * This buffer will store the properties, e.g. extensions names.*/
             VkExtensionProperties.Buffer instanceExtensionsProperties = VkExtensionProperties.calloc(numExtensions, memoryStack);
             vkEnumerateInstanceExtensionProperties((String) null, numExtensionBuf, instanceExtensionsProperties);
             for (int i = 0; i < numExtensions; i++) {
