@@ -2,7 +2,7 @@ package gabrielmendessc.com.vulkan.book.api.eng.graph.vk;
 
 import java.util.Locale;
 
-import static org.lwjgl.vulkan.VK10.VK_SUCCESS;
+import static org.lwjgl.vulkan.VK11.VK_SUCCESS;
 
 public class VulkanUtils {
 

@@ -14,6 +14,8 @@ public class EngineProperties {
     private static final String FILENAME = "eng.properties";
     private static EngineProperties instance;
     @Getter
+    private String physDeviceName;
+    @Getter
     private int ups;
     @Getter
     private boolean validate;
@@ -28,6 +30,7 @@ public class EngineProperties {
 
             ups = Integer.parseInt(properties.getOrDefault("ups", DEFAULT_UPS).toString());
             validate = Boolean.parseBoolean(properties.getOrDefault("vkValidate", false).toString());
+            physDeviceName = properties.getProperty("physDeviceName");
 
         } catch (IOException e) {
 

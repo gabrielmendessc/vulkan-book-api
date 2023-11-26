@@ -34,15 +34,15 @@ import static org.lwjgl.vulkan.EXTDebugUtils.VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDAT
 import static org.lwjgl.vulkan.EXTDebugUtils.VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 import static org.lwjgl.vulkan.EXTDebugUtils.vkCreateDebugUtilsMessengerEXT;
 import static org.lwjgl.vulkan.EXTDebugUtils.vkDestroyDebugUtilsMessengerEXT;
-import static org.lwjgl.vulkan.VK10.VK_API_VERSION_1_0;
-import static org.lwjgl.vulkan.VK10.VK_FALSE;
-import static org.lwjgl.vulkan.VK10.VK_NULL_HANDLE;
-import static org.lwjgl.vulkan.VK10.VK_STRUCTURE_TYPE_APPLICATION_INFO;
-import static org.lwjgl.vulkan.VK10.VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-import static org.lwjgl.vulkan.VK10.vkCreateInstance;
-import static org.lwjgl.vulkan.VK10.vkDestroyInstance;
-import static org.lwjgl.vulkan.VK10.vkEnumerateInstanceExtensionProperties;
-import static org.lwjgl.vulkan.VK10.vkEnumerateInstanceLayerProperties;
+import static org.lwjgl.vulkan.VK11.VK_API_VERSION_1_1;
+import static org.lwjgl.vulkan.VK11.VK_FALSE;
+import static org.lwjgl.vulkan.VK11.VK_NULL_HANDLE;
+import static org.lwjgl.vulkan.VK11.VK_STRUCTURE_TYPE_APPLICATION_INFO;
+import static org.lwjgl.vulkan.VK11.VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+import static org.lwjgl.vulkan.VK11.vkCreateInstance;
+import static org.lwjgl.vulkan.VK11.vkDestroyInstance;
+import static org.lwjgl.vulkan.VK11.vkEnumerateInstanceExtensionProperties;
+import static org.lwjgl.vulkan.VK11.vkEnumerateInstanceLayerProperties;
 
 public class Instance {
 
@@ -57,7 +57,7 @@ public class Instance {
 
     public Instance(boolean validate) {
 
-        Logger.debug("Creating Vulkan instance");
+        Logger.debug("Creating Vulkan Instance");
         try (MemoryStack memoryStack = MemoryStack.stackPush()) {
 
             ByteBuffer appShortName = memoryStack.UTF8("VulkanBook");
@@ -67,7 +67,7 @@ public class Instance {
                     .applicationVersion(1)
                     .pEngineName(appShortName)
                     .engineVersion(0)
-                    .apiVersion(VK_API_VERSION_1_0);
+                    .apiVersion(VK_API_VERSION_1_1);
 
             List<String> validationLayerList = getSupportedValidationLayers();
             boolean supportsValidation = validate;
@@ -161,7 +161,7 @@ public class Instance {
 
     public void cleanUp() {
 
-        Logger.debug("Destroying Vulkan instace");
+        Logger.debug("Destroying Vulkan Instance");
         if (vkDebugHandle != VK_NULL_HANDLE) {
             vkDestroyDebugUtilsMessengerEXT(vkInstance, vkDebugHandle, null);
         }
