@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import static org.lwjgl.vulkan.VK11.VK_SUCCESS;
 
-public class VulkanUtils {
+public class VKUtils {
 
     public static OSType getOS() {
 

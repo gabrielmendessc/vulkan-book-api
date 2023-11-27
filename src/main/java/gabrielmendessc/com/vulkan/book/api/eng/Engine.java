@@ -23,11 +23,9 @@ public class Engine {
     }
 
     private void cleanup() {
-
         appLogic.cleanUp();
         render.cleanUp();
         window.cleanUp();
-
     }
 
     public void run() {

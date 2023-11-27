@@ -103,7 +103,7 @@ public class Instance {
             }
 
             PointerBuffer requiredExtension;
-            boolean usePoratability = instanceExtesionSet.contains(PORTABILITY_EXTENSION) && VulkanUtils.getOS() == VulkanUtils.OSType.MACOS;
+            boolean usePoratability = instanceExtesionSet.contains(PORTABILITY_EXTENSION) && VKUtils.getOS() == VKUtils.OSType.MACOS;
             if (supportsValidation) {
 
                 ByteBuffer vkDebugUtilsExtensions = memoryStack.UTF8(EXTDebugUtils.VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
@@ -144,14 +144,14 @@ public class Instance {
             }
 
             PointerBuffer pInstance = memoryStack.mallocPointer(1);
-            VulkanUtils.vkCheck(vkCreateInstance(instanceInfo, null, pInstance), "Error creating instance");
+            VKUtils.vkCheck(vkCreateInstance(instanceInfo, null, pInstance), "Error creating instance");
 
             vkInstance = new VkInstance(pInstance.get(0), instanceInfo);
 
             vkDebugHandle = VK_NULL_HANDLE;
             if (supportsValidation) {
                 LongBuffer longBuffer = memoryStack.mallocLong(1);
-                VulkanUtils.vkCheck(vkCreateDebugUtilsMessengerEXT(vkInstance, debugUtils, null, longBuffer), "Error creating debug utils");
+                VKUtils.vkCheck(vkCreateDebugUtilsMessengerEXT(vkInstance, debugUtils, null, longBuffer), "Error creating debug utils");
                 vkDebugHandle = longBuffer.get(0);
             }
 

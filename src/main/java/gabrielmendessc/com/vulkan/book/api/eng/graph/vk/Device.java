@@ -40,7 +40,7 @@ public class Device {
 
             //Getting required extensions
             Set<String> deviceExtension = getDeviceExtensionSet();
-            boolean usePortability = deviceExtension.contains(VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME) && VulkanUtils.OSType.MACOS.equals(VulkanUtils.getOS());
+            boolean usePortability = deviceExtension.contains(VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME) && VKUtils.OSType.MACOS.equals(VKUtils.getOS());
             int numExtensions = usePortability ? 2 : 1;
             PointerBuffer requiredExtensions = memoryStack.mallocPointer(numExtensions);
             requiredExtensions.put(memoryStack.ASCII(KHRSwapchain.VK_KHR_SWAPCHAIN_EXTENSION_NAME));
@@ -69,7 +69,7 @@ public class Device {
                     .pEnabledFeatures(features)
                     .pQueueCreateInfos(queueCreationInfoBuff);
             PointerBuffer pointerBuffer = memoryStack.mallocPointer(1);
-            VulkanUtils.vkCheck(vkCreateDevice(physicalDevice.getVkPhysicalDevice(), vkDeviceCreateInfo, null, pointerBuffer), "Failed to create device");
+            VKUtils.vkCheck(vkCreateDevice(physicalDevice.getVkPhysicalDevice(), vkDeviceCreateInfo, null, pointerBuffer), "Failed to create device");
             vkDevice = new VkDevice(pointerBuffer.get(0), physicalDevice.getVkPhysicalDevice(), vkDeviceCreateInfo);
 
         }

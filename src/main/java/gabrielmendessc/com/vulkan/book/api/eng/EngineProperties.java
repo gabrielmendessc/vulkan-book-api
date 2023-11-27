@@ -11,14 +11,19 @@ import java.util.Properties;
 public class EngineProperties {
 
     private static final int DEFAULT_UPS = 30;
+    private static final int DEFAULT_REQUESTED_IMAGES = 3;
     private static final String FILENAME = "eng.properties";
     private static EngineProperties instance;
     @Getter
-    private String physDeviceName;
-    @Getter
     private int ups;
     @Getter
+    private int requestedImages;
+    @Getter
     private boolean validate;
+    @Getter
+    private boolean vSync;
+    @Getter
+    private String physDeviceName;
 
     private EngineProperties() {
 
@@ -31,6 +36,8 @@ public class EngineProperties {
             ups = Integer.parseInt(properties.getOrDefault("ups", DEFAULT_UPS).toString());
             validate = Boolean.parseBoolean(properties.getOrDefault("vkValidate", false).toString());
             physDeviceName = properties.getProperty("physDeviceName");
+            requestedImages = Integer.parseInt(properties.getOrDefault("requestedImages", DEFAULT_REQUESTED_IMAGES).toString());
+            vSync = Boolean.parseBoolean(properties.getOrDefault("vsync", true).toString());
 
         } catch (IOException e) {
 

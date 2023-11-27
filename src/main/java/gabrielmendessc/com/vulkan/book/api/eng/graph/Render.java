@@ -7,6 +7,7 @@ import gabrielmendessc.com.vulkan.book.api.eng.graph.vk.Instance;
 import gabrielmendessc.com.vulkan.book.api.eng.graph.vk.PhysicalDevice;
 import gabrielmendessc.com.vulkan.book.api.eng.graph.vk.Queue;
 import gabrielmendessc.com.vulkan.book.api.eng.graph.vk.Surface;
+import gabrielmendessc.com.vulkan.book.api.eng.graph.vk.SwapChain;
 import gabrielmendessc.com.vulkan.book.api.eng.scene.Scene;
 
 public class Render {
@@ -16,6 +17,8 @@ public class Render {
     private final Queue.GraphicsQueue graphQueue;
     private final PhysicalDevice physicalDevice;
     private final Surface surface;
+    private SwapChain swapChain;
+
 
     public Render(Window window, Scene scene) {
         EngineProperties engineProperties = EngineProperties.getInstance();
@@ -24,9 +27,11 @@ public class Render {
         device = new Device(physicalDevice);
         surface = new Surface(physicalDevice, window.getWindowHandle());
         graphQueue = new Queue.GraphicsQueue(device, 0);
+        swapChain = new SwapChain(device, surface, window, engineProperties.getRequestedImages(), engineProperties.isVSync());
     }
 
     public void cleanUp() {
+        swapChain.cleanUp();
         surface.cleanUp();
         device.cleanUp();
         physicalDevice.cleanUp();
